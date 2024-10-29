@@ -14,9 +14,24 @@ Cloud File Explorer est une application permettant aux utilisateurs de stocker, 
 
 ## Structure du projet
 
-cloud_file_explorer/ ├── main.py # Fichier principal pour lancer l'application ├── database/ │ ├── init.py # Rendre le dossier database un module │ ├── db_setup.py # Configuration et initialisation des tables │ └── account_db.py # Gestion des comptes (enregistrement, connexion) ├── encryption/ │ ├── init.py # Rendre le dossier encryption un module │ └── password_manager.py # Gestion du cryptage de mot de passe ├── file_management/ │ ├── init.py # Rendre le dossier file_management un module │ ├── folders.py # Gestion des dossiers │ └── files.py # Gestion des fichiers ├── ui/ │ ├── init.py # Rendre le dossier ui un module │ └── app_interface.py # Interface graphique avec Tkinter └── utils/ └── init.py # Rendre le dossier utils un module
-
-
+cloud_file_explorer/
+├── main.py                   # Fichier principal pour lancer l'application
+├── database/
+│   ├── __init__.py           # Rendre le dossier database un module
+│   ├── db_setup.py           # Configuration et initialisation des tables
+│   └── account_db.py         # Gestion des comptes (enregistrement, connexion)
+├── encryption/
+│   ├── __init__.py           # Rendre le dossier encryption un module
+│   └── password_manager.py    # Gestion du cryptage de mot de passe
+├── file_management/
+│   ├── __init__.py           # Rendre le dossier file_management un module
+│   ├── folders.py            # Gestion des dossiers
+│   └── files.py              # Gestion des fichiers
+├── ui/
+│   ├── __init__.py           # Rendre le dossier ui un module
+│   └── app_interface.py      # Interface graphique avec Tkinter
+└── utils/
+    └── __init__.py           # Rendre le dossier utils un module
 
 
 ## Prérequis
