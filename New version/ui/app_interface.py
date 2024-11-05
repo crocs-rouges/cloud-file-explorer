@@ -40,5 +40,16 @@ class Application(tk.Tk):
         # Interface principale après la connexion
         self.main_frame = tk.Frame(self)
         self.main_frame.pack()
+        username = self.username_entry.get()
         tk.Label(self.main_frame, text="Bienvenue dans votre espace de fichiers").pack()
+        self.folder_manager.show_folders(username)
+        # faire une zone ou on peut ajouter des boutons et avoir un scroll si il y en a trop
+        
+        
+        # zone bouton ajouter et supprimer dossiers
+        tk.Label(self.login_frame, text="Nom d'utilisateur").pack()
+        self.username_entry = tk.Entry(self.login_frame)
+        self.username_entry.pack()
+        tk.Button(self.login_frame, text="ajouter", command=self.folder_manager.add_folder(username, )).pack()
+        
         # Autres widgets pour la gestion des dossiers et fichiers

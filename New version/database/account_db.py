@@ -11,7 +11,7 @@ class AccountManager:
     def add_account(self, email, password, card_info):
         encrypted_password = self.password_manager.encrypt(password)
         cursor = self.conn.cursor()
-        cursor.execute("INSERT INTO Compte (adresse, mot_de_passe, carte_bancaire) VALUES (?, ?, ?)",
+        cursor.execute("INSERT INTO Compte (adresse, mot_de_passe ) VALUES (?, ?)",
                        (email, encrypted_password, card_info))
         self.conn.commit()
 

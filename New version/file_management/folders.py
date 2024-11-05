@@ -15,3 +15,7 @@ class FolderManager:
         cursor = self.conn.cursor()
         cursor.execute("SELECT id_dossier, nom_dossier FROM Dossier WHERE id_compte = ?", (user_id,))
         return cursor.fetchall()
+    
+    def show_folders(self,user_id):
+        # doit afficher tout les dossiers de l'utilisateur
+        pass
