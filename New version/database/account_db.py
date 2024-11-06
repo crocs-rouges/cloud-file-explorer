@@ -23,8 +23,16 @@ class AccountManager:
             return True
         return False
     
-    def get_user_id(self,email):
-        cursor = self.conn.cursor()
-        cursor.execute("SELECT id_compte FROM Compte WHERE adresse = ?", (email,))
-        user_id = cursor.fetchall()
-        return user_id
+    # Dans account_db.py
+
+
+    def get_user_id(self, email):
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("SELECT id_compte FROM Compte WHERE adresse = ?", (email,))
+            result = cursor.fetchone()  # Récupère le premier résultat
+            return result[0] if result else None  # Retourne uniquement l'ID
+        except Exception as e:
+            print(f"Erreur lors de la récupération de l'ID utilisateur : {e}")
+            return None
+
