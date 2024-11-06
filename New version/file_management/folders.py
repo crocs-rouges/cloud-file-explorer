@@ -8,14 +8,17 @@ class FolderManager:
 
     def add_folder(self, user_id, folder_name):
         cursor = self.conn.cursor()
-        cursor.execute("INSERT INTO Dossier (id_compte, nom_dossier) VALUES (?, ?)", (user_id, folder_name))
+        print(folder_name)
+        cursor.execute("INSERT INTO Dossier (id_compte, nom_dossier) VALUES (?, ?)",
+                       (user_id, folder_name))
         self.conn.commit()
 
     def get_folders(self, user_id):
         cursor = self.conn.cursor()
         cursor.execute("SELECT id_dossier, nom_dossier FROM Dossier WHERE id_compte = ?", (user_id,))
-        return cursor.fetchall()
+        record = cursor.fetchone()
+        return record
     
     def show_folders(self,user_id):
         # doit afficher tout les dossiers de l'utilisateur
-        pass
+        print(user_id)

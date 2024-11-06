@@ -12,6 +12,7 @@ class Application(tk.Tk):
         self.folder_manager = FolderManager()
         self.file_manager = FileManager()
         self.title("Cloud File Explorer")
+        self.user_id = None
         self.init_login_screen()
 
     def init_login_screen(self):
@@ -32,6 +33,7 @@ class Application(tk.Tk):
         password = self.password_entry.get()
         if self.account_manager.login(email, password):
             self.login_frame.pack_forget()
+            self.user_id = self.account_manager.get_user_id(email)
             self.init_main_interface()
         else:
             tk.Label(self.login_frame, text="Erreur de connexion", fg="red").pack()
@@ -47,9 +49,27 @@ class Application(tk.Tk):
         
         
         # zone bouton ajouter et supprimer dossiers
-        tk.Label(self.login_frame, text="Nom d'utilisateur").pack()
-        self.username_entry = tk.Entry(self.login_frame)
-        self.username_entry.pack()
-        tk.Button(self.login_frame, text="ajouter", command=self.folder_manager.add_folder(username, )).pack()
+        tk.Label(self.main_frame, text="Nom du nouveau dossier").pack()
+        self.folder_name = tk.Entry(self.main_frame)
+        self.folder_name_entry = tk.Entry(self.main_frame)
+        self.folder_name.pack()
+        
+        
+        tk.Button(self.main_frame, text="ajouter", command=self.add_folder).pack()
+        
+    def add_folder(self):
+        username = self.user_id
+        foldername = self.folder_name_entry.get()
+        # on arrive pas à obtenir le nom du fichier créer
+        # le formatage
+        print("debut")
+        print(username)
+        print("patate")
+        print(foldername)
+        print("comment")
+        if self.folder_manager.add_folder(username, foldername):
+            tk.Label(self.main_frame, text="Dossier créer", fg="green").pack()
+        else:
+            tk.Label(self.main_frame, text="Erreur lors de la création", fg="red").pack()
         
         # Autres widgets pour la gestion des dossiers et fichiers

@@ -2,8 +2,6 @@
 
 from ui.app_interface import Application
 
-def bonjour(lol):
-    print("comment vas-tu")
 
 
 if __name__ == "__main__":
