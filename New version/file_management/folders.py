@@ -1,6 +1,7 @@
 # file_management/folders.py
 
 import sqlite3
+import tkinter as tk
 
 class FolderManager:
     def __init__(self):
@@ -46,6 +47,7 @@ class FolderManager:
             for folder_id, folder_name in folders:
                 print(f"ID: {folder_id}, Nom: {folder_name}")
             return folders
+        
         except Exception as e:
             print(f"Erreur lors de l'affichage des dossiers: {e}")
             return []

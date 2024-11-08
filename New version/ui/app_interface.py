@@ -34,67 +34,119 @@ class Application(tk.Tk):
             self.login_frame.pack_forget()
             result = self.account_manager.get_user_id(email)
             self.user_id = result[0] if isinstance(result, tuple) else result  # Extrait l'ID du tuple si nécessaire
-            self.init_main_interface()
+            self.init_folder_interface()
         else:
             tk.Label(self.login_frame, text="Erreur de connexion", fg="red").pack()
 
-    def init_main_interface(self):
+    def init_folder_interface(self):
         # Interface principale après la connexion
-        self.main_frame = tk.Frame(self)
-        self.main_frame.pack()
+        self.folder_main = tk.Frame(self)
+        self.folder_main.pack()
         username = self.username_entry.get()
-        tk.Label(self.main_frame, text="Bienvenue dans votre espace de fichiers").pack()
+        tk.Label(self.folder_main, text="Bienvenue dans votre espace de fichiers").pack()
         
-        # Afficher les dossiers existants
-        self.folder_manager.show_folders(username)
         
-        # Zone pour ajouter et supprimer des dossiers
-        tk.Label(self.main_frame, text="Nom du nouveau dossier").pack()
-        self.folder_name_entry = tk.Entry(self.main_frame)  # Entrée pour nom de dossier
+        # compiler tout le code en dessous en un bouton qui ouvre une page pour ajouter un bouton
+        # Zone pour ajouter des dossiers
+        tk.Label(self.folder_main, text="Nom du nouveau dossier").pack()
+        self.folder_name_entry = tk.Entry(self.folder_main)  # Entrée pour nom de dossier
         self.folder_name_entry.pack()
         # Bouton pour ajouter un nouveau dossier
-        tk.Button(self.main_frame, text="Ajouter", command=self.add_folder).pack()
+        tk.Button(self.folder_main, text="Ajouter", command=self.add_folder).pack()
         
         
         # bouton pour supprimer un fichier
+        tk.Label(self.folder_main, text="dossier à supprimer").pack()
+        self.folder_name_entry = tk.Entry(self.folder_main)  # Entrée pour nom de dossier
+        self.folder_name_entry.pack()
+        # Bouton pour ajouter un nouveau dossier
+        tk.Button(self.folder_main, text="supprimer", command=self.delete_folder).pack()
         
-        # zone qui affiche tous les dossiers 
         
+        
+        
+        # zone qui affiche tous les dossiers
+        self.folder_manager.show_folders(self.user_id)
+        self.showfolder()
         
         
         # bouton pour ouvrir les dossiers
+        tk.Button(self.folder_main, text="Ouvrir", command=self.openfolder).pack()
+
+    def init_files_interface(self):
+        # Interface principale après l'ouverture d'un fichier
+        self.file_main = tk.Frame(self)
+        self.file_main.pack()
+        username = self.username_entry.get()
+        tk.Label(self.file_main, text="Bienvenue dans votre espace de fichiers").pack()
+        tk.Label(self.file_main, text="ici sont affichés tous vos fichiers").pack()
+
+
+    def showfolder(self):
+        # affiche tous les fichiers venant  de la base de données
+        # et étant relié au compte de l'utilisateur
+        
+        # bug quand un  fichier est supprimé, il reste dans la liste
+        # bug quand les fichiers s'affiche il se place à la fin de la page tkinter et pas dans une zone spécial
+        
+
+
+        folder_id = self.folder_manager.get_folders(self.user_id)
+        self.folder_manager.show_folders(self.user_id)
+        for i in range(len(folder_id)):
+            tk.Label(self.folder_main, text=folder_id[i]).pack()
+
+            
 
     def add_folder(self):
-        username = self.user_id
+        # partie logique qui sert à créer un fichier
+        # et à l'ajouter à la base de données
+    
+        
+        # prend tout les dossiers de l'utilisateurs
         foldername = self.folder_name_entry.get().strip()  # Enlève les espaces inutiles
 
         if not foldername:
-            tk.Label(self.main_frame, text="Veuillez entrer un nom de dossier.", fg="red").pack()
+            # gestion de l'erreur si l'utilisateur  n'a pas saisi de nom de dossier
+            tk.Label(self.folder_main, text="Veuillez entrer un nom de dossier.", fg="red").pack()
             return
 
         # Tenter de créer le dossier
-        success = self.folder_manager.add_folder(username, foldername)
+        success = self.folder_manager.add_folder(self.user_id, foldername)
         
         if success:
             # Effacer le champ de saisie
             self.folder_name_entry.delete(0, tk.END)
             
             # Mettre à jour l'affichage des dossiers
-            folders = self.folder_manager.show_folders(username)
+            self.folder_manager.show_folders(self.user_id)
+            self.showfolder()
             
             # Afficher un message de succès
-            success_label = tk.Label(self.main_frame, text=f"Dossier '{foldername}' créé avec succès.", fg="green")
+            success_label = tk.Label(self.folder_main, text=f"Dossier '{foldername}' créé avec succès.", fg="green")
             success_label.pack()
             
             # Optionnel : faire disparaître le message après quelques secondes
             self.after(3000, success_label.destroy)
         else:
             # Afficher un message d'erreur
-            error_label = tk.Label(self.main_frame, text="Erreur lors de la création du dossier.", fg="red")
+            error_label = tk.Label(self.folder_main, text="Erreur lors de la création du dossier.", fg="red")
             error_label.pack()
             
             # Optionnel : faire disparaître le message après quelques secondes
             self.after(3000, error_label.destroy)
 
         
-        # Autres widgets pour la gestion des dossiers et fichiers
+
+    def openfolder(self , folderName):
+        success = self.file_manager.get_files(folderName)
+        
+        if success:
+            self.init_file_interface()
+        else:
+            error_label = tk.Label(self.folder_main, text="Erreur lors de l'ouverture du dossier.", fg="red")
+            error_label.pack()
+            
+
+
+
