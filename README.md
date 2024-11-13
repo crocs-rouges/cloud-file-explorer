@@ -55,7 +55,6 @@ python database/db_setup.py
 Utilisation
 Pour lancer l'application, exécutez le fichier principal :
 
-
 python main.py
 Contributions
 Les contributions sont les bienvenues ! Pour contribuer, suivez ces étapes :
