@@ -13,7 +13,16 @@ class Application(tk.Tk):
         self.file_manager = FileManager()
         self.title("Cloud File Explorer")
         self.user_id = None
+        self.folder = self.folder_manager.get_folders(self.user_id)
+        self.folderNAME = self.initfolderNAME(self.folder)
+        
         self.init_login_screen()
+        
+    def initfolderNAME(self, folder):
+        folderNAME = []
+        for name in folder:
+            folderNAME.append(name[1])
+        return folderNAME
 
     def init_login_screen(self):
         # Création de l'interface de connexion
@@ -34,6 +43,8 @@ class Application(tk.Tk):
             self.login_frame.pack_forget()
             result = self.account_manager.get_user_id(email)
             self.user_id = result[0] if isinstance(result, tuple) else result  # Extrait l'ID du tuple si nécessaire
+            self.folder = self.folder_manager.get_folders(self.user_id)
+            self.folderNAME = self.initfolderNAME(self.folder)
             self.init_folder_interface()
         else:
             tk.Label(self.login_frame, text="Erreur de connexion", fg="red").pack()
@@ -42,8 +53,9 @@ class Application(tk.Tk):
         # Interface principale après la connexion
         self.folder_main = tk.Frame(self)
         self.folder_main.pack()
-        username = self.username_entry.get()
         tk.Label(self.folder_main, text="Bienvenue dans votre espace de fichiers").pack()
+        self.folder = self.folder_manager.get_folders(self.user_id)
+        self.folderNAME = self.initfolderNAME(self.folder)
         
         
         # compiler tout le code en dessous en un bouton qui ouvre une page pour ajouter un bouton
@@ -57,17 +69,27 @@ class Application(tk.Tk):
         
         # bouton pour supprimer un fichier
         tk.Label(self.folder_main, text="dossier à supprimer").pack()
-        self.folder_name_entry = tk.Entry(self.folder_main)  # Entrée pour nom de dossier
-        self.folder_name_entry.pack()
+        # Remplir la Listbox initialement
+        
+        
+        
+        # Menu déroulant pour afficher les options
+        self.selected_var = tk.StringVar()
+        self.selected_var.set("Sélectionne une option")
+        print(self.folder)
+        print(self.folderNAME)
+        self.menu = tk.OptionMenu(self.folder_main, self.selected_var, *self.folderNAME)
+        self.menu.pack(pady=10)
+        
         # Bouton pour ajouter un nouveau dossier
         tk.Button(self.folder_main, text="supprimer", command=self.delete_folder).pack()
         
-        
-        
-        
         # zone qui affiche tous les dossiers
-        self.folder_manager.show_folders(self.user_id)
+        # la listbox est une liste de tous les dossiers
+        self.listbox = tk.Listbox(self.folder_main, selectmode=tk.SINGLE)
+        self.listbox.pack(pady=10, fill=tk.BOTH)
         self.showfolder()
+        
         
         
         # bouton pour ouvrir les dossiers
@@ -77,55 +99,51 @@ class Application(tk.Tk):
         # Interface principale après l'ouverture d'un fichier
         self.file_main = tk.Frame(self)
         self.file_main.pack()
-        username = self.username_entry.get()
         tk.Label(self.file_main, text="Bienvenue dans votre espace de fichiers").pack()
         tk.Label(self.file_main, text="ici sont affichés tous vos fichiers").pack()
 
 
+
     def showfolder(self):
-        # affiche tous les fichiers venant  de la base de données
+        # affiche tous les dossiers venant de la base de données
         # et étant relié au compte de l'utilisateur
-        
-        # bug quand un  fichier est supprimé, il reste dans la liste
-        # bug quand les fichiers s'affiche il se place à la fin de la page tkinter et pas dans une zone spécial
-        
+        self.folder = self.folder_manager.get_folders(self.user_id)
+        self.folderNAME = self.initfolderNAME(self.folder)
+        self.listbox.delete(0,tk.END)
+        for option in self.folderNAME:
+            self.listbox.insert(tk.END, option)
 
-
-        folder_id = self.folder_manager.get_folders(self.user_id)
-        self.folder_manager.show_folders(self.user_id)
-        for i in range(len(folder_id)):
-            tk.Label(self.folder_main, text=folder_id[i]).pack()
-
-            
+    def delete_folder(self):
+        # supprime le dossier choisi par l'utilisateur
+        folderNAME = self.selected_var.get()
+        self.folder_manager.delete_folder(self.user_id, folderNAME)
+        self.showfolder()
 
     def add_folder(self):
         # partie logique qui sert à créer un fichier
         # et à l'ajouter à la base de données
     
-        
+        self.folder = self.folder_manager.get_folders(self.user_id)
+        self.folderNAME = self.initfolderNAME(self.folder)
         # prend tout les dossiers de l'utilisateurs
         foldername = self.folder_name_entry.get().strip()  # Enlève les espaces inutiles
-
         if not foldername:
             # gestion de l'erreur si l'utilisateur  n'a pas saisi de nom de dossier
             tk.Label(self.folder_main, text="Veuillez entrer un nom de dossier.", fg="red").pack()
             return
-
         # Tenter de créer le dossier
         success = self.folder_manager.add_folder(self.user_id, foldername)
-        
         if success:
             # Effacer le champ de saisie
             self.folder_name_entry.delete(0, tk.END)
-            
             # Mettre à jour l'affichage des dossiers
             self.folder_manager.show_folders(self.user_id)
             self.showfolder()
-            
             # Afficher un message de succès
             success_label = tk.Label(self.folder_main, text=f"Dossier '{foldername}' créé avec succès.", fg="green")
             success_label.pack()
-            
+            self.folder = self.folder_manager.get_folders(self.user_id)
+            self.folderNAME = self.initfolderNAME(self.folder)
             # Optionnel : faire disparaître le message après quelques secondes
             self.after(3000, success_label.destroy)
         else:
@@ -138,7 +156,9 @@ class Application(tk.Tk):
 
         
 
-    def openfolder(self , folderName):
+    def openfolder(self):
+        
+        folderName = self.listbox.get(tk.ACTIVE)
         success = self.file_manager.get_files(folderName)
         
         if success:

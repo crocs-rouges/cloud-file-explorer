@@ -26,6 +26,27 @@ class FolderManager:
         except sqlite3.Error as e:
             print(f"Erreur lors de la création du dossier: {e}")
             return False
+        
+    def delete_folder(self , user_id , folder_name):
+        try:
+            cursor = self.conn.cursor()
+            # Vérifier si le dossier existe déjà pour cet utilisateur
+            cursor.execute("SELECT COUNT(*) FROM Dossier WHERE id_compte = ? AND nom_dossier = ?",
+                         (user_id, folder_name))
+            if cursor.fetchone()[0] < 0:
+                print(f"Le dossier {folder_name} n'existe pas pour cet utilisateur")
+                return False
+            
+            # Ajouter le nouveau dossier
+            cursor.execute("DELETE FROM Dossier WHERE id_compte = ? AND nom_dossier = ?",
+                         (user_id, folder_name))
+            self.conn.commit()
+            print(f"Dossier {folder_name} supprimer avec succès pour l'utilisateur {user_id}")
+            return True
+        except sqlite3.Error as e:
+            print(f"Erreur lors de la suppression du dossier: {e}")
+            return False
+            
 
     def get_folders(self, user_id):
         try:
