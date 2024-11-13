@@ -33,7 +33,6 @@ cloud_file_explorer/
 └── utils/
     └── __init__.py           # Rendre le dossier utils un module
 
-
 ## Prérequis
 
 - Python 3.x
@@ -44,6 +43,7 @@ cloud_file_explorer/
 ## Installation
 
 1. Clonez le dépôt :
+
    ```bash
    git clone <URL_DU_DEPOT>
    cd cloud_file_explorer
