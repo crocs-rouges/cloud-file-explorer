@@ -11,13 +11,13 @@ class AccountManager:
     def add_account(self, email, password):
         encrypted_password = self.password_manager.encrypt(password)
         cursor = self.conn.cursor()
-        cursor.execute("INSERT INTO Compte (adresse, mot_de_passe ) VALUES (?, ?)",
+        cursor.execute("INSERT INTO Compte (email, password ) VALUES (?, ?)",
                        (email, encrypted_password))
         self.conn.commit()
 
     def login(self, email, password):
         cursor = self.conn.cursor()
-        cursor.execute("SELECT mot_de_passe FROM Compte WHERE adresse = ?", (email,))
+        cursor.execute("SELECT password FROM Compte WHERE email = ?", (email,))
         record = cursor.fetchone()
         if record and self.password_manager.check_password(record[0], password):
             return True
@@ -29,7 +29,7 @@ class AccountManager:
     def get_user_id(self, email):
         try:
             cursor = self.conn.cursor()
-            cursor.execute("SELECT id_compte FROM Compte WHERE adresse = ?", (email,))
+            cursor.execute("SELECT id_compte FROM Compte WHERE email = ?", (email,))
             result = cursor.fetchone()  # Récupère le premier résultat
             return result[0] if result else None  # Retourne uniquement l'ID
         except Exception as e:
