@@ -31,7 +31,7 @@ class Application(tk.Tk):
             folderNAME.append(name[1])
         return folderNAME
 
-    def init_login_screen(self):
+    def init_connexion_screen(self):
         # self.initialisation()
         self.page_choix.tkraise()
 
