@@ -54,6 +54,34 @@ class Application(tk.Tk):
         self.password_entry.pack()
         tk.Button(self.login_frame, text="Connexion", command=self.check_login).pack()
 
+    def start_creation_compte(self):
+        self.page_creation.tkraise()
+
+        self.nom = tk.Entry(self.page_creation)
+        self.prenom = tk.Entry(self.page_creation)
+        self.email = tk.Entry(self.page_creation)
+        self.password = tk.Entry(self.page_creation)
+
+        label_nom = tk.Label(self.page_creation, text="Nom")
+        label_prenom = tk.Label(self.page_creation, text="Prénom")
+        label_email = tk.Label(self.page_creation, text="Adresse Email")
+        label_password = tk.Label(self.page_creation, text="Mot de passe")
+
+        label_nom.grid(row=0, column=0)
+        self.nom.grid(row=0, column=1)
+        label_prenom.grid(row=1, column=0)
+        self.prenom.grid(row=1, column=1)
+        label_email.grid(row=2, column=0)
+        self.email.grid(row=2, column=1)
+        label_password.grid(row=3, column=0)
+        self.password.grid(row=3, column=1)
+
+        bouton_creer = tk.Button(self.page_creation, text="Creation du compte", command=self.creer_compte)
+        bouton_creer.grid(row=5, column=1)
+
+        bouton_retour = tk.Button(self.page_creation, text="Retour", command=self.start)
+        bouton_retour.grid(row=5, column=0)
+    
     def check_login(self):
         email = self.username_entry.get()
         password = self.password_entry.get()
