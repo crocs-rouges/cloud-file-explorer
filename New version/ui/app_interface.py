@@ -15,6 +15,13 @@ class Application(tk.Tk):
         self.user_id = None
         self.folder = self.folder_manager.get_folders(self.user_id)
         self.folderNAME = self.initfolderNAME(self.folder)
+
+        self.page_choix = tk.Frame(root)
+        self.page_choix.grid(row=0, column=0, sticky="nsew")
+        self.page_connexion = tk.Frame(root)  # initialisation_page_connexion()
+        self.page_connexion.grid(row=0, column=0, sticky="nsew")
+        self.page_creation = tk.Frame(root)  # self.initialisation_page_creation()
+        self.page_creation.grid(row=0, column=0, sticky="nsew")
         
         self.init_login_screen()
         
@@ -24,6 +31,17 @@ class Application(tk.Tk):
             folderNAME.append(name[1])
         return folderNAME
 
+    def init_login_screen(self):
+        # self.initialisation()
+        self.page_choix.tkraise()
+
+        self.bouton_connexion = tk.Button(self.page_choix, text="Connexion au compte", command=self.start_connexion_compte)
+        self.bouton_connexion.grid(row=3, column=5)
+
+        self.bouton_creation = tk.Button(self.page_choix, text="Creation du compte", command=self.start_creation_compte)
+        self.bouton_creation.grid(row=3, column=2)
+
+    
     def init_login_screen(self):
         # Création de l'interface de connexion
         self.login_frame = tk.Frame(self)
