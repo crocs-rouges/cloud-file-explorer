@@ -35,7 +35,7 @@ class Application(tk.Tk):
         # self.initialisation()
         self.page_choix.tkraise()
 
-        self.bouton_connexion = tk.Button(self.page_choix, text="Connexion au compte", command=self.start_connexion_compte)
+        self.bouton_connexion = tk.Button(self.page_choix, text="Connexion au compte", command=self.init_login_screen)
         self.bouton_connexion.grid(row=3, column=5)
 
         self.bouton_creation = tk.Button(self.page_choix, text="Creation du compte", command=self.start_creation_compte)
