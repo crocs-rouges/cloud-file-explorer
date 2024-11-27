@@ -16,14 +16,14 @@ class Application(tk.Tk):
         self.folder = self.folder_manager.get_folders(self.user_id)
         self.folderNAME = self.initfolderNAME(self.folder)
 
-        self.page_choix = tk.Frame(root)
+        self.page_choix = tk.Frame(self)
         self.page_choix.grid(row=0, column=0, sticky="nsew")
-        self.page_connexion = tk.Frame(root)  # initialisation_page_connexion()
+        self.page_connexion = tk.Frame(self)  # initialisation_page_connexion()
         self.page_connexion.grid(row=0, column=0, sticky="nsew")
-        self.page_creation = tk.Frame(root)  # self.initialisation_page_creation()
+        self.page_creation = tk.Frame(self)  # self.initialisation_page_creation()
         self.page_creation.grid(row=0, column=0, sticky="nsew")
         
-        self.init_login_screen()
+        self.init_connexion_screen()
         
     def initfolderNAME(self, folder):
         folderNAME = []
@@ -45,7 +45,7 @@ class Application(tk.Tk):
     def init_login_screen(self):
         # Création de l'interface de connexion
         self.login_frame = tk.Frame(self)
-        self.login_frame.pack()
+        self.login_frame.grid(row=0, column=0, sticky="nsew")
         tk.Label(self.login_frame, text="Nom d'utilisateur").pack()
         self.username_entry = tk.Entry(self.login_frame)
         self.username_entry.pack()
@@ -53,6 +53,8 @@ class Application(tk.Tk):
         self.password_entry = tk.Entry(self.login_frame, show="*")
         self.password_entry.pack()
         tk.Button(self.login_frame, text="Connexion", command=self.check_login).pack()
+        self.error_label = tk.Label(self.login_frame, text="", fg="red") 
+        self.error_label.pack()
 
     def start_creation_compte(self):
         self.page_creation.tkraise()
@@ -79,7 +81,7 @@ class Application(tk.Tk):
         bouton_creer = tk.Button(self.page_creation, text="Creation du compte", command=self.creer_compte)
         bouton_creer.grid(row=5, column=1)
 
-        bouton_retour = tk.Button(self.page_creation, text="Retour", command=self.start)
+        bouton_retour = tk.Button(self.page_creation, text="Retour", command=self.init_connexion_screen)
         bouton_retour.grid(row=5, column=0)
     
     def check_login(self):
@@ -93,7 +95,7 @@ class Application(tk.Tk):
             self.folderNAME = self.initfolderNAME(self.folder)
             self.init_folder_interface()
         else:
-            tk.Label(self.login_frame, text="Erreur de connexion", fg="red").pack()
+            self.error_label.config(text="Erreur de connexion")
 
     def init_folder_interface(self):
         # Interface principale après la connexion
