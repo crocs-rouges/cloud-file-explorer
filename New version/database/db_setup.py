@@ -20,6 +20,7 @@ def init_db():
                         id_dossier INTEGER,
                         nom_fichier TEXT,
                         type_fichier TEXT,
+                        binaire INTEGER,
                         FOREIGN KEY(id_dossier) REFERENCES Dossier(id_dossier))''')
     conn.commit()
     conn.close()

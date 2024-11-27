@@ -3,6 +3,7 @@
 import sqlite3
 import tkinter as tk
 
+
 class FolderManager:
     def __init__(self):
         self.conn = sqlite3.connect("cloud_storage.db")
@@ -71,6 +72,16 @@ class FolderManager:
         
         except Exception as e:
             print(f"Erreur lors de l'affichage des dossiers: {e}")
+            return []
+        
+        
+    def get_id_dossier(self, foldername):
+        try:
+            cursor = self.conn.cursor()
+            cursor.execute("SELECT id_dossier FROM Dossier WHERE nom_dossier = ?", (foldername,))
+            return cursor.fetchall()  # Retourne tous les dossiers
+        except sqlite3.Error as e:
+            print(f"Erreur lors de la récupération des dossiers: {e}")
             return []
 
     def __del__(self):
