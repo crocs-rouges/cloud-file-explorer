@@ -100,7 +100,7 @@ class Application(tk.Tk):
     def init_folder_interface(self):
         # Interface principale après la connexion
         self.folder_main = tk.Frame(self)
-        self.folder_main.pack()
+        self.folder_main.grid(row=0, column=0, sticky="nsew")
         tk.Label(self.folder_main, text="Bienvenue dans votre espace de fichiers").pack()
         self.folder = self.folder_manager.get_folders(self.user_id)
         self.folderNAME = self.initfolderNAME(self.folder)
