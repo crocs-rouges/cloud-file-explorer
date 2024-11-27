@@ -8,8 +8,10 @@ def init_db():
     # Creation des tables Compte, Dossier et Fichier
     cursor.execute('''CREATE TABLE IF NOT EXISTS Compte (
                         id_compte INTEGER PRIMARY KEY AUTOINCREMENT,
-                        adresse TEXT UNIQUE NOT NULL,
-                        mot_de_passe TEXT NOT NULL)''')
+                        nom TEXT NOT NULL,
+                        prenom TEXT NOT NULL,    
+                        email TEXT UNIQUE NOT NULL,
+                        password TEXT NOT NULL)''')
     cursor.execute('''CREATE TABLE IF NOT EXISTS Dossier (
                         id_dossier INTEGER PRIMARY KEY AUTOINCREMENT,
                         id_compte INTEGER,
