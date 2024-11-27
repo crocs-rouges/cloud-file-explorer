@@ -78,8 +78,8 @@ class Application(tk.Tk):
         label_password.grid(row=3, column=0)
         self.password.grid(row=3, column=1)
 
-        bouton_creer = tk.Button(self.page_creation, text="Creation du compte", command=self.creer_compte)
-        bouton_creer.grid(row=5, column=1)
+        # bouton_creer = tk.Button(self.page_creation, text="Creation du compte", command=self.creer_compte)
+        # bouton_creer.grid(row=5, column=1)
 
         bouton_retour = tk.Button(self.page_creation, text="Retour", command=self.init_connexion_screen)
         bouton_retour.grid(row=5, column=0)
