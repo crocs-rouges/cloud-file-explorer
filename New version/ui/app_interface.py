@@ -209,7 +209,7 @@ class Application(tk.Tk):
         self.folder_main.pack_forget()
         # Interface principale après l'ouverture d'un fichier
         self.file_main = tk.Frame(self)
-        self.file_main.pack()
+        self.file_main.grid(row=0, column=0, sticky="nsew")
         tk.Label(self.file_main, text="Bienvenue dans votre espace de fichiers").pack()
         tk.Label(self.file_main, text="ici sont affichés tous vos fichiers").pack()
         
