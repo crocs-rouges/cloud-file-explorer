@@ -22,8 +22,7 @@ class FileManager:
         return cursor.fetchall()
 
     def add_file_to_db(self, file_path, file_name, file_type, id_folder):
-        with sqlite3.connect('cloud_storage.db') as conn:
-            c = conn.cursor()
-            c.execute("INSERT INTO Fichier (id_dossier, nom_fichier, type_fichier, binaire) VALUES (?, ?, ?, ?)", 
-                    (id_folder, file_name, file_type, sqlite3.Binary(open(file_path, 'rb').read())))
-            conn.commit()
+        cursor = self.conn.cursor()
+        cursor.execute("INSERT INTO Fichier (id_dossier, nom_fichier, type_fichier, binaire) VALUES (?, ?, ?, ?)", 
+                (id_folder, file_name, file_type, sqlite3.Binary(open(file_path, 'rb').read())))
+        self.conn.commit()

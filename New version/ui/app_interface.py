@@ -149,7 +149,7 @@ class Application(tk.Tk):
         print(self.folderID)
         success = self.file_manager.get_files(self.folderID)
         if success:
-            self.init_files_interface() 
+            self.init_files_interface()
         else:
             error_label = tk.Label(self.folder_main, text="Erreur lors de l'ouverture du dossier.", fg="red")
             error_label.pack()
@@ -223,4 +223,3 @@ class Application(tk.Tk):
         self.listboxfile.delete(0,tk.END)
         for option in self.fileNAME:
             self.listboxfile.insert(tk.END, option)
-        print("boubou")
