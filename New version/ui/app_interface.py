@@ -19,8 +19,15 @@ class Application(tk.Tk):
         self.user_id = None
         self.folder = self.folder_manager.get_folders(self.user_id)
         self.folderNAME = self.initfolderNAME(self.folder)
+
+        self.page_choix = tk.Frame(self)
+        self.page_choix.grid(row=0, column=0, sticky="nsew")
+        self.page_connexion = tk.Frame(self)  # initialisation_page_connexion()
+        self.page_connexion.grid(row=0, column=0, sticky="nsew")
+        self.page_creation = tk.Frame(self)  # self.initialisation_page_creation()
+        self.page_creation.grid(row=0, column=0, sticky="nsew")
         
-        self.init_login_screen()
+        self.init_connexion_screen()
         
     def initfolderNAME(self, folder):
         folderNAME = []
@@ -28,10 +35,20 @@ class Application(tk.Tk):
             folderNAME.append(name[1])
         return folderNAME
 
+    def init_connexion_screen(self):
+        # self.initialisation()
+        self.page_choix.tkraise()
+
+        self.bouton_connexion = tk.Button(self.page_choix, text="Connexion au compte", command=self.init_login_screen)
+        self.bouton_connexion.grid(row=3, column=5)
+
+        self.bouton_creation = tk.Button(self.page_choix, text="Creation du compte", command=self.start_creation_compte)
+        self.bouton_creation.grid(row=3, column=2)
+
     def init_login_screen(self):
         # Création de l'interface de connexion
         self.login_frame = tk.Frame(self)
-        self.login_frame.pack()
+        self.login_frame.grid(row=0, column=0, sticky="nsew")
         tk.Label(self.login_frame, text="Nom d'utilisateur").pack()
         self.username_entry = tk.Entry(self.login_frame)
         self.username_entry.pack()
@@ -39,7 +56,37 @@ class Application(tk.Tk):
         self.password_entry = tk.Entry(self.login_frame, show="*")
         self.password_entry.pack()
         tk.Button(self.login_frame, text="Connexion", command=self.check_login).pack()
+        self.error_label = tk.Label(self.login_frame, text="", fg="red") 
+        self.error_label.pack()
 
+    def start_creation_compte(self):
+        self.page_creation.tkraise()
+
+        self.nom = tk.Entry(self.page_creation)
+        self.prenom = tk.Entry(self.page_creation)
+        self.email = tk.Entry(self.page_creation)
+        self.password = tk.Entry(self.page_creation)
+
+        label_nom = tk.Label(self.page_creation, text="Nom")
+        label_prenom = tk.Label(self.page_creation, text="Prénom")
+        label_email = tk.Label(self.page_creation, text="Adresse Email")
+        label_password = tk.Label(self.page_creation, text="Mot de passe")
+
+        label_nom.grid(row=0, column=0)
+        self.nom.grid(row=0, column=1)
+        label_prenom.grid(row=1, column=0)
+        self.prenom.grid(row=1, column=1)
+        label_email.grid(row=2, column=0)
+        self.email.grid(row=2, column=1)
+        label_password.grid(row=3, column=0)
+        self.password.grid(row=3, column=1)
+
+        # bouton_creer = tk.Button(self.page_creation, text="Creation du compte", command=self.creer_compte)
+        # bouton_creer.grid(row=5, column=1)
+
+        bouton_retour = tk.Button(self.page_creation, text="Retour", command=self.init_connexion_screen)
+        bouton_retour.grid(row=5, column=0)
+    
     def check_login(self):
         email = self.username_entry.get()
         password = self.password_entry.get()
@@ -51,7 +98,9 @@ class Application(tk.Tk):
             self.folderNAME = self.initfolderNAME(self.folder)
             self.init_folder_interface()
         else:
-            tk.Label(self.login_frame, text="Erreur de connexion", fg="red").pack()
+            self.error_label.config(text="Erreur de connexion")
+
+
 
 
 
