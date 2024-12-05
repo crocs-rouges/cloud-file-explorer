@@ -12,6 +12,7 @@ from file_management.files import FileManager
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
+        self.iconbitmap("images/Logo.ico")
         self.account_manager = AccountManager()
         self.folder_manager = FolderManager()
         self.file_manager = FileManager()
