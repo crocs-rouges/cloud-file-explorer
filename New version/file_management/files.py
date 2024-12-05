@@ -97,11 +97,21 @@ class FileManager:
             return bytes_tab.decode('utf-8')
         return ''.join(chr(b) for b in bytes_tab)
 
-    def get_binary(self, file_name):
+    def get_binary(self, file_name) -> bytes:
+        """prend le fichier en binaire et le renvoie sous forme de bytes
+        
+
+        Args:
+            file_name (str): nom du fichier qui va etre ouvert par windows
+
+        Returns:
+            bytes: bytes qui vont etre lu par la méthode open_binary
+        """
         try:
             cursor = self.conn.cursor()
             cursor.execute("SELECT binaire FROM Fichier WHERE nom_fichier = ?", (file_name,))
             result = cursor.fetchone()
+            print(result)
             if result:
                 binary_data = result[0]
                 # Vérifier si les données sont au format hexadécimal
@@ -120,6 +130,8 @@ class FileManager:
     def open_binary(self, binary_data, file_extension):
         """
         Ouvre un fichier binaire à partir de données binaires.
+        en convertissant les bytes en un fichier temporaire qui sera supprimé après la lecture
+        ce fichier temporaire est ouvert par windows et est donc accessible par le système d'exploitation
 
         Args:
             binary_data (bytes): Données binaires à écrire dans le fichier.
