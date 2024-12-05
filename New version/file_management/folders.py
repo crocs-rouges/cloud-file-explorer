@@ -75,7 +75,7 @@ class FolderManager:
             return []
         
         
-    def get_id_dossier(self, foldername):
+    def get_file_id(self, foldername):
         try:
             cursor = self.conn.cursor()
             cursor.execute("SELECT id_dossier FROM Dossier WHERE nom_dossier = ?", (foldername,))

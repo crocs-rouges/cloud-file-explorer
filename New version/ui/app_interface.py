@@ -193,7 +193,7 @@ class Application(tk.Tk):
     def openfolder(self):
         folderName = self.listbox.get(tk.ACTIVE)
         print(folderName)
-        self.folderID = self.folder_manager.get_id_dossier(folderName)
+        self.folderID = self.folder_manager.get_file_id(folderName)
         self.folderID = self.folderID[0][0]
         print(self.folderID)
         success = self.file_manager.get_files(self.folderID)
@@ -210,46 +210,64 @@ class Application(tk.Tk):
         # Interface principale après l'ouverture d'un fichier
         self.file_main = tk.Frame(self)
         self.file_main.grid(row=0, column=0, sticky="nsew")
-        tk.Label(self.file_main, text="Bienvenue dans votre espace de fichiers").pack()
-        tk.Label(self.file_main, text="ici sont affichés tous vos fichiers").pack()
         
-        self.listboxfile = tk.Listbox(self.file_main, selectmode=tk.SINGLE)
-        self.listboxfile.pack(pady=10, fill=tk.BOTH)
+        tk.Label(self.file_main, text="rename the file currently selected").pack()
+        self.file_name_entry = tk.Entry(self.file_main)  # Entrée pour nom de dossier
+        self.file_name_entry.pack()
+        tk.Button(self.file_main, text="rename the file", command=self.rename_file).pack()
+        
+        self.listboxfile = tk.Listbox(self.file_main, width=50)
+        self.listboxfile.pack()
         self.showfile()
         # bouton pour ouvrir les dossiers
         tk.Button(self.file_main, text="Ouvrir", command=self.openfile).pack()
-        tk.Label(self.file_main, text="fin de tous les fichiers").pack()
         
-        tk.Button(self.file_main, text="Ouvrir", command=self.addfile).pack()
+        tk.Button(self.file_main, text="ajouter des fichiers", command=self.addfile).pack()
 
 
     def addfile(self):
+        # Ouvrir la boîte de dialogue de sélection de fichier
         file_path = filedialog.askopenfilename()
+        # Vérifier si un fichier a été sélectionné
         if file_path:
-            file_name = file_path.split("/")[-1]
-            file_type = file_path.split(".")[-1]
-            self.file_manager.add_file_to_db(file_path, file_name, file_type, self.folderID)
-            self.listboxfile.insert(tk.END, file_name)
-            self.showfile()
+            # Extraire le nom du fichier 
+            # Utilisez os.path pour une méthode plus robuste
+            import os
+            file_name = os.path.basename(file_path)
+            # Extraire l'extension du fichier
+            file_type = os.path.splitext(file_path)[1].lstrip('.')
+            # Convertir le fichier en données binaires
+            filedata = self.file_manager.convert_file_to_binary(file_path)
+            # Vérifier que la conversion a réussi
+            if filedata is not None:
+                # Ajouter le fichier à la base de données
+                self.file_manager.add_file(self.folderID, file_name, file_type, filedata)
+                # Mettre à jour l'interface
+                self.listbox.insert(tk.END, file_name)
+                self.showfile()
+            else:
+                # Gérer l'erreur de conversion
+                tk.messagebox.showerror("Erreur", "Impossible de convertir le fichier")
 
+    def rename_file(self):
+        fileName = self.listbox.get(tk.ACTIVE)
+        print(fileName)
+        self.file_manager.rename_file(self.folderID, fileName, self.file_name_entry.get())
+        self.init_files_interface()
+        
 
     def openfile(self):
         file_name = self.listboxfile.get(tk.ACTIVE)
-        try:
-            with sqlite3.connect('cloud_storage.db') as conn:
-                c = conn.cursor()
-                c.execute("SELECT nom_fichier, binaire FROM Fichier WHERE nom_fichier = ?", (file_name,))
-                file_name, file_data = c.fetchone()
-                
-                image = Image.open(io.BytesIO(file_data))
-                image.thumbnail((400, 400))
-                photo = ImageTk.PhotoImage(image)
-                
-                # Afficher l'image dans l'interface Tkinter
-                self.display_image(photo)
-        except Exception as e:
-            tk.messagebox.showerror("Erreur", f"Impossible d'ouvrir le fichier : {e}")
-
+        file_type = self.file_manager.get_file_type(file_name)
+        binary_data = self.file_manager.get_binary(file_name)
+        binary_data = self.file_manager.get_binary(file_name)
+        self.file_manager.open_binary(binary_data, file_type)
+        
+        
+            
+    
+        
+    
     def display_image(self, photo):
         self.image_label = tk.Label(self.file_main, image=photo)
         self.image_label.image = photo
