@@ -9,8 +9,8 @@ class PasswordManager:
         password_encrypter = ""
         for elem in password:
             password_encrypter += encryption[elem.lower()]
-        print(password_encrypter)
-        return password
+        # print(password_encrypter)
+        return password_encrypter
 
     def check_password(self, encrypted_password, plain_password, shift=3):
         return encrypted_password == self.encrypt(plain_password, shift)

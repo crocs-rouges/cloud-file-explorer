@@ -19,6 +19,7 @@ class AccountManager:
         cursor = self.conn.cursor()
         cursor.execute("SELECT password FROM Compte WHERE email = ?", (email,))
         record = cursor.fetchone()
+        print(record)
         if record and self.password_manager.check_password(record[0], password):
             return True
         return False
