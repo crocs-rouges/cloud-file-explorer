@@ -12,7 +12,7 @@ from file_management.files import FileManager
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.iconbitmap("images/Logo.ico")
+        # self.iconbitmap("images/Logo.ico")
         self.account_manager = AccountManager()
         self.folder_manager = FolderManager()
         self.file_manager = FileManager()
@@ -251,8 +251,10 @@ class Application(tk.Tk):
                 tk.messagebox.showerror("Erreur", "Impossible de convertir le fichier")
 
     def rename_file(self):
-        fileName = self.listbox.get(tk.ACTIVE)
+        fileName = self.listboxfile.get(tk.ACTIVE)
+        print("bonjour")
         print(fileName)
+        print("coucou")
         self.file_manager.rename_file(self.folderID, fileName, self.file_name_entry.get())
         self.init_files_interface()
         
@@ -261,14 +263,9 @@ class Application(tk.Tk):
         file_name = self.listboxfile.get(tk.ACTIVE)
         file_type = self.file_manager.get_file_type(file_name)
         binary_data = self.file_manager.get_binary(file_name)
-        binary_data = self.file_manager.get_binary(file_name)
+        binary_data = self.file_manager.convert_to_str(binary_data)
         self.file_manager.open_binary(binary_data, file_type)
         
-        
-            
-    
-        
-    
     def display_image(self, photo):
         self.image_label = tk.Label(self.file_main, image=photo)
         self.image_label.image = photo
