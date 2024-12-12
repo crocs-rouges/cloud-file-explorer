@@ -13,7 +13,7 @@ from file_management.files import FileManager
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
-        self.iconbitmap("images/Logo.ico")
+        # self.iconbitmap("images/Logo.ico")
         self.account_manager = AccountManager()
         self.folder_manager = FolderManager()
         self.file_manager = FileManager()
@@ -216,7 +216,7 @@ class Application(tk.Tk):
         self.file_main = tk.Frame(self)
         self.file_main.grid(row=0, column=0, sticky="nsew")
         
-        tk.Label(self.file_main, text="rename the file currently selected").pack()
+        tk.Label(self.file_main, text="renome le fichier").pack()
         self.file_name_entry = tk.Entry(self.file_main)  # Entrée pour nom de dossier
         self.file_name_entry.pack()
         tk.Button(self.file_main, text="rename the file", command=self.rename_file, bg="#00AA90", fg="white").pack()
