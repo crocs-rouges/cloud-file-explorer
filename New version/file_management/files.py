@@ -13,7 +13,8 @@ class FileManager:
 
 
     def add_file(self, folder_id, file_name, file_type, file_data):
-        """ajoute un fichier dans la base de donnée
+        """ajoute un fichier dans la base de donnée en utilisant un fichier préxistant 
+        qui est dans les dossiers de l'utilisateur
 
         Args:
             folder_id (int): l'idantifiant du fichier
@@ -28,6 +29,7 @@ class FileManager:
 
     def get_file_type(self, file_name):
         """une méthode qui donne le type du fichier demandé
+        donc son extension .txt .py .xlsc
 
         Args:
             file_name str: nom du fichier souhaité
@@ -55,7 +57,7 @@ class FileManager:
         
         
     def rename_file(self, id_folder, file_name, new_name : str):
-        """change le nom du fichier sélectionner avec le nouveau nom
+        """change le nom du fichier sélectionner avec le nouveau nom grâce à une requete SQL
 
         Args:
             id_folder (int): identifiant du dossier dans lequel est le fichier
