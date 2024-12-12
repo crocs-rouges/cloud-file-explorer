@@ -1,6 +1,7 @@
 # ui/app_interface.py
 
 import tkinter as tk
+from tkinter import messagebox
 from PIL import Image, ImageTk
 from tkinter import filedialog
 import sqlite3
@@ -44,7 +45,7 @@ class Application(tk.Tk):
                                           bg="#00AA90", fg="white")
         self.bouton_connexion.grid(row=3, column=5)
 
-        self.bouton_creation = tk.Button(self.page_choix, text="Creation du compte", command=self.start_creation_compte
+        self.bouton_creation = tk.Button(self.page_choix, text="Creation du compte", command=self.start_creation_compte,
                                         bg="#00AA90", fg="white")
         self.bouton_creation.grid(row=3, column=2)
 
