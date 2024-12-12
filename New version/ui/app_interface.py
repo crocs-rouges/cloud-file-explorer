@@ -12,7 +12,7 @@ from file_management.files import FileManager
 class Application(tk.Tk):
     def __init__(self):
         super().__init__()
-        # self.iconbitmap("images/Logo.ico")
+        self.iconbitmap("images/Logo.ico")
         self.account_manager = AccountManager()
         self.folder_manager = FolderManager()
         self.file_manager = FileManager()
@@ -40,10 +40,12 @@ class Application(tk.Tk):
         # self.initialisation()
         self.page_choix.tkraise()
 
-        self.bouton_connexion = tk.Button(self.page_choix, text="Connexion au compte", command=self.init_login_screen)
+        self.bouton_connexion = tk.Button(self.page_choix, text="Connexion au compte", command=self.init_login_screen, 
+                                          bg="#00AA90", fg="white")
         self.bouton_connexion.grid(row=3, column=5)
 
-        self.bouton_creation = tk.Button(self.page_choix, text="Creation du compte", command=self.start_creation_compte)
+        self.bouton_creation = tk.Button(self.page_choix, text="Creation du compte", command=self.start_creation_compte
+                                        bg="#00AA90", fg="white")
         self.bouton_creation.grid(row=3, column=2)
 
     def init_login_screen(self):
@@ -56,7 +58,7 @@ class Application(tk.Tk):
         tk.Label(self.login_frame, text="Mot de passe").pack()
         self.password_entry = tk.Entry(self.login_frame, show="*")
         self.password_entry.pack()
-        tk.Button(self.login_frame, text="Connexion", command=self.check_login).pack()
+        tk.Button(self.login_frame, text="Connexion", command=self.check_login, bg="#00AA90", fg="white").pack()
         self.error_label = tk.Label(self.login_frame, text="", fg="red") 
         self.error_label.pack()
 
@@ -85,7 +87,8 @@ class Application(tk.Tk):
         # bouton_creer = tk.Button(self.page_creation, text="Creation du compte", command=self.creer_compte)
         # bouton_creer.grid(row=5, column=1)
 
-        bouton_retour = tk.Button(self.page_creation, text="Retour", command=self.init_connexion_screen)
+        bouton_retour = tk.Button(self.page_creation, text="Retour", command=self.init_connexion_screen, bg="#00AA90", 
+                                  fg="white")
         bouton_retour.grid(row=5, column=0)
     
     def check_login(self):
@@ -120,7 +123,7 @@ class Application(tk.Tk):
         self.folder_name_entry = tk.Entry(self.folder_main)  # Entrée pour nom de dossier
         self.folder_name_entry.pack()
         # Bouton pour ajouter un nouveau dossier
-        tk.Button(self.folder_main, text="Ajouter", command=self.add_folder).pack()
+        tk.Button(self.folder_main, text="Ajouter", command=self.add_folder, bg="#00AA90", fg="white").pack()
         # bouton pour supprimer un fichier
         tk.Label(self.folder_main, text="dossier à supprimer").pack()
         # Menu déroulant pour afficher les options
@@ -132,7 +135,7 @@ class Application(tk.Tk):
         self.menu.pack(pady=10)
         
         # Bouton pour ajouter un nouveau dossier
-        tk.Button(self.folder_main, text="supprimer", command=self.delete_folder).pack()
+        tk.Button(self.folder_main, text="supprimer", command=self.delete_folder, bg="#00AA90", fg="white").pack()
         
         # zone qui affiche tous les dossiers
         # la listbox est une liste de tous les dossiers
@@ -140,7 +143,7 @@ class Application(tk.Tk):
         self.listbox.pack(pady=10, fill=tk.BOTH)
         self.showfolder()
         # bouton pour ouvrir les dossiers
-        tk.Button(self.folder_main, text="Ouvrir", command=self.openfolder).pack()
+        tk.Button(self.folder_main, text="Ouvrir", command=self.openfolder, bg="#00AA90", fg="white").pack()
 
 
     def showfolder(self):
@@ -215,15 +218,15 @@ class Application(tk.Tk):
         tk.Label(self.file_main, text="rename the file currently selected").pack()
         self.file_name_entry = tk.Entry(self.file_main)  # Entrée pour nom de dossier
         self.file_name_entry.pack()
-        tk.Button(self.file_main, text="rename the file", command=self.rename_file).pack()
+        tk.Button(self.file_main, text="rename the file", command=self.rename_file, bg="#00AA90", fg="white").pack()
         
         self.listboxfile = tk.Listbox(self.file_main, width=50)
         self.listboxfile.pack()
         self.showfile()
         # bouton pour ouvrir les dossiers
-        tk.Button(self.file_main, text="Ouvrir", command=self.openfile).pack()
+        tk.Button(self.file_main, text="Ouvrir", command=self.openfile, bg="#00AA90", fg="white").pack()
         
-        tk.Button(self.file_main, text="ajouter des fichiers", command=self.addfile).pack()
+        tk.Button(self.file_main, text="ajouter des fichiers", command=self.addfile, bg="#00AA90", fg="white").pack()
 
 
     def addfile(self):
