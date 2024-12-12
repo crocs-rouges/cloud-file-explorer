@@ -31,13 +31,24 @@ class Application(tk.Tk):
         
         self.init_connexion_screen()
         
-    def initfolderNAME(self, folder):
+    def initfolderNAME(self, folder) -> list:
+        """fonction qui va lister tous les dossiers de l'utilisateur connecter
+        et prendre leurs nom sans les chemin d'accès ni les spécificités
+
+        Args:
+            folder (list): list de tous les dossiers de l'utilisateur
+
+        Returns:
+            list: la list des noms de tous les dossiers de l'utilisateurs 
+        """
         folderNAME = []
         for name in folder:
             folderNAME.append(name[1])
         return folderNAME
 
     def init_connexion_screen(self):
+        """première page qui s'affiche lors du démarage de l'application 
+        """
         # self.initialisation()
         self.page_choix.tkraise()
 
@@ -50,6 +61,8 @@ class Application(tk.Tk):
         self.bouton_creation.grid(row=3, column=2)
 
     def init_login_screen(self):
+        """ page de connexion pour pouvoir acceder au service de l'application
+        """
         # Création de l'interface de connexion
         self.login_frame = tk.Frame(self)
         self.login_frame.grid(row=0, column=0, sticky="nsew")
@@ -64,6 +77,8 @@ class Application(tk.Tk):
         self.error_label.pack()
 
     def start_creation_compte(self):
+        """page de création d'un compte qui va etre ajouté à la base de donnée
+        """
         self.page_creation.tkraise()
 
         self.nom = tk.Entry(self.page_creation)
@@ -93,6 +108,9 @@ class Application(tk.Tk):
         bouton_retour.grid(row=5, column=0)
     
     def check_login(self):
+        """regarde via les méthodes appropriés si le mot de passe donnée par 
+        l'utilisateur est bien le meme que celui contenu dans la base de donnée 
+        """
         email = self.username_entry.get()
         password = self.password_entry.get()
         if self.account_manager.login(email, password):
@@ -110,6 +128,8 @@ class Application(tk.Tk):
 
 
     def init_folder_interface(self):
+        """interface de la zone des dossiers 
+        """
         self.login_frame.pack_forget()
         # Interface principale après la connexion
         self.folder_main = tk.Frame(self)
@@ -148,8 +168,8 @@ class Application(tk.Tk):
 
 
     def showfolder(self):
-        # affiche tous les dossiers venant de la base de données
-        # et étant relié au compte de l'utilisateur
+        """ affiche tous les dossiers venant de la base de données et étant relié au compte de l'utilisateur
+        """
         self.folder = self.folder_manager.get_folders(self.user_id)
         self.folderNAME = self.initfolderNAME(self.folder)
         self.listbox.delete(0,tk.END)
@@ -157,14 +177,15 @@ class Application(tk.Tk):
             self.listbox.insert(tk.END, option)
 
     def delete_folder(self):
-        # supprime le dossier choisi par l'utilisateur
+        """supprime le dossier choisi par l'utilisateur
+        """
         folderNAME = self.selected_var.get()
         self.folder_manager.delete_folder(self.user_id, folderNAME)
         self.showfolder()
 
     def add_folder(self):
-        # partie logique qui sert à créer un fichier
-        # et à l'ajouter à la base de données
+        """partie logique qui sert à créer un fichier et à l'ajouter à la base de données
+        """
         self.folder = self.folder_manager.get_folders(self.user_id)
         self.folderNAME = self.initfolderNAME(self.folder)
         # prend tout les dossiers de l'utilisateurs
@@ -196,6 +217,10 @@ class Application(tk.Tk):
             self.after(3000, error_label.destroy)
 
     def openfolder(self):
+        """code pour ouvrir les fichiers à l'aide de tkinter 
+        
+        il utilise les méthodes d'autres fichiers
+        """
         folderName = self.listbox.get(tk.ACTIVE)
         print(folderName)
         self.folderID = self.folder_manager.get_file_id(folderName)
@@ -211,6 +236,8 @@ class Application(tk.Tk):
 
 
     def init_files_interface(self):
+        """crée l'interface pour la zone des fichiers 
+        """
         self.folder_main.pack_forget()
         # Interface principale après l'ouverture d'un fichier
         self.file_main = tk.Frame(self)

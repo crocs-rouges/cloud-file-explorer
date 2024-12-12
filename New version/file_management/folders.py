@@ -59,6 +59,14 @@ class FolderManager:
             return []
 
     def show_folders(self, user_id):
+        """_summary_
+
+        Args:
+            user_id (_type_): _description_
+
+        Returns:
+            _type_: _description_
+        """
         try:
             folders = self.get_folders(user_id)
             if not folders:
@@ -76,6 +84,14 @@ class FolderManager:
         
         
     def get_file_id(self, foldername):
+        """donne l'id du fichier dans la base de données
+
+        Args:
+            foldername (str): le nom du fichier dont on cherche l'id
+
+        Returns:
+            str: id du fichier demandé
+        """
         try:
             cursor = self.conn.cursor()
             cursor.execute("SELECT id_dossier FROM Dossier WHERE nom_dossier = ?", (foldername,))
