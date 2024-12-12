@@ -103,7 +103,7 @@ class Application(tk.Tk):
             self.folderNAME = self.initfolderNAME(self.folder)
             self.init_folder_interface()
         else:
-            self.error_label.config(text="Erreur de connexion")
+            self.error_label.config(text="Erreur de connexion", fg="red")
 
 
 
