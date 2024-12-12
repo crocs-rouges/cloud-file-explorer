@@ -59,13 +59,13 @@ class FolderManager:
             return []
 
     def show_folders(self, user_id):
-        """_summary_
+        """donne une liste de tous les dossiers de l'utilisateurs 
 
         Args:
-            user_id (_type_): _description_
+            user_id (str): id de l'uitilisateur connecté
 
         Returns:
-            _type_: _description_
+            list: liste de tous les dossiers de l'utilisateur
         """
         try:
             folders = self.get_folders(user_id)
