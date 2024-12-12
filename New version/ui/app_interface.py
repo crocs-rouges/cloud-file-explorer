@@ -110,6 +110,8 @@ class Application(tk.Tk):
 
 
     def init_folder_interface(self):
+        """interface de la zone des fichiers 
+        """
         self.login_frame.pack_forget()
         # Interface principale après la connexion
         self.folder_main = tk.Frame(self)
@@ -148,8 +150,8 @@ class Application(tk.Tk):
 
 
     def showfolder(self):
-        # affiche tous les dossiers venant de la base de données
-        # et étant relié au compte de l'utilisateur
+        """ affiche tous les dossiers venant de la base de données et étant relié au compte de l'utilisateur
+        """
         self.folder = self.folder_manager.get_folders(self.user_id)
         self.folderNAME = self.initfolderNAME(self.folder)
         self.listbox.delete(0,tk.END)
@@ -157,14 +159,15 @@ class Application(tk.Tk):
             self.listbox.insert(tk.END, option)
 
     def delete_folder(self):
-        # supprime le dossier choisi par l'utilisateur
+        """supprime le dossier choisi par l'utilisateur
+        """
         folderNAME = self.selected_var.get()
         self.folder_manager.delete_folder(self.user_id, folderNAME)
         self.showfolder()
 
     def add_folder(self):
-        # partie logique qui sert à créer un fichier
-        # et à l'ajouter à la base de données
+        """partie logique qui sert à créer un fichier et à l'ajouter à la base de données
+        """
         self.folder = self.folder_manager.get_folders(self.user_id)
         self.folderNAME = self.initfolderNAME(self.folder)
         # prend tout les dossiers de l'utilisateurs
@@ -196,6 +199,10 @@ class Application(tk.Tk):
             self.after(3000, error_label.destroy)
 
     def openfolder(self):
+        """code pour ouvrir les fichiers à l'aide de tkinter 
+        
+        il utilise les méthodes d'autres fichiers
+        """
         folderName = self.listbox.get(tk.ACTIVE)
         print(folderName)
         self.folderID = self.folder_manager.get_file_id(folderName)
@@ -211,6 +218,8 @@ class Application(tk.Tk):
 
 
     def init_files_interface(self):
+        """crée l'interface pour la zone des fichiers 
+        """
         self.folder_main.pack_forget()
         # Interface principale après l'ouverture d'un fichier
         self.file_main = tk.Frame(self)
