@@ -8,11 +8,11 @@ class AccountManager:
         self.conn = sqlite3.connect("cloud_storage.db")
         self.password_manager = PasswordManager()
 
-    def add_account(self, email, password):
+    def add_account(self, prenom, nom, email, password):
         encrypted_password = self.password_manager.encrypt(password)
         cursor = self.conn.cursor()
-        cursor.execute("INSERT INTO Compte (email, password ) VALUES (?, ?)",
-                       (email, encrypted_password))
+        cursor.execute("INSERT INTO Compte (email, nom, prenom, password ) VALUES (?, ?, ?, ?)",
+                       (email, nom, prenom, encrypted_password))
         self.conn.commit()
 
     def login(self, email, password):
