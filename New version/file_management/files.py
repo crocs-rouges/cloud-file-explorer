@@ -113,7 +113,6 @@ class FileManager:
             cursor = self.conn.cursor()
             cursor.execute("SELECT binaire FROM Fichier WHERE nom_fichier = ?", (file_name,))
             result = cursor.fetchone()
-            print(result)
             if result:
                 binary_data = result[0]
                 # Vérifier si les données sont au format hexadécimal
